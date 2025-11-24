@@ -17,8 +17,8 @@ QUESTIONS = [
      ]},
     {"id": 2, "type": "card", "question": "Data Handling", "name": "Data Handling",
      "options": [
-         {"text": "Local", "image": "On-Device.png", "title": "On-Device", "description": "All processing and storage of user data occurs locally on your device, ensuring maximum privacy and rapid response times."},
-         {"text": "On-Cloud", "image": "Cloud Base.png", "title": "Cloud-Based", "description": "User data is securely managed and processed on remote servers, offering seamless access, synchronization across devices, and powerful computational resources."}
+         {"text": "Local", "image": "Ondevice.png", "title": "On-Device", "description": "All processing and storage of user data occurs locally on your device, ensuring maximum privacy and rapid response times."},
+         {"text": "On-Cloud", "image": "Cloudbase.png", "title": "Cloud-Based", "description": "User data is securely managed and processed on remote servers, offering seamless access, synchronization across devices, and powerful computational resources."}
      ]},
     {"id": 3, "type": "card", "question": "Human Oversight", "name": "Human Oversight",
      "options": [
