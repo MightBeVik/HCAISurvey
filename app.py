@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import csv
 import os
 import requests
@@ -6,6 +8,14 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
+
+# Rate limiting
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 CSV_FILE = 'survey_results.csv'
 GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz7pvaiuOx7-U-mz3OpoXhllOYTB0iJJljkXVLbtgMnR6bIjQF1ViILJSbqXCrB1w2iNA/exec"
@@ -76,6 +86,10 @@ def init_csv():
 
 @app.route('/')
 def index():
+    # Check if user already completed survey
+    if request.cookies.get('survey_completed'):
+        return render_template('already_completed.html')
+    
     session.clear()
     session['answers'] = {}
     return render_template('start.html')
@@ -139,6 +153,7 @@ def survey(question_num):
                          selected_items=selected_items)
 
 @app.route('/submit', methods=['GET'])
+@limiter.limit("3 per hour")
 def submit_survey():
     if 'answers' not in session:
         return redirect(url_for('index'))
@@ -161,7 +176,11 @@ def submit_survey():
         print(f"Error sending to Google Sheets: {e}")
     
     session.clear()
-    return redirect(url_for('thank_you'))
+    
+    # Set cookie to mark survey as completed
+    response = redirect(url_for('thank_you'))
+    response.set_cookie('survey_completed', 'true', max_age=365*24*60*60)  # 1 year
+    return response
 
 @app.route('/thank-you')
 def thank_you():
