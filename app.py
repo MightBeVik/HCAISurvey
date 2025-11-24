@@ -87,8 +87,8 @@ def init_csv():
 @app.route('/')
 def index():
     # Check if user already completed survey
-    if request.cookies.get('survey_completed'):
-        return render_template('already_completed.html')
+#    if request.cookies.get('survey_completed'):
+#        return render_template('already_completed.html')
     
     session.clear()
     session['answers'] = {}
