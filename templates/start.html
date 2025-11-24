@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="start-content">
+            <h1>Hey!</h1>
+            <p>This survey helps us understand your preferences for mental health applications. You'll answer 10 questions about features like data handling, privacy, cost, and more. At the end, you'll rank your top choices. It takes about 5 minutes to complete.</p>
+            <a href="{{ url_for('survey', question_num=1) }}" class="btn btn-primary">Take Survey</a>
+        </div>
+    </div>
+</body>
+</html> 

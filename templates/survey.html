@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey - Question {{ question_num }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        function selectCard(input) {
+            // Update selected state immediately
+            const allCards = document.querySelectorAll('.card-option');
+            allCards.forEach(card => card.classList.remove('selected'));
+            input.closest('.card-option').classList.add('selected');
+        }
+
+        // Validate on submit for non-ranking questions
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('surveyForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function(e) {
+                const submitter = e.submitter;
+                
+                // Only validate on next/submit buttons, not previous
+                if (submitter && (submitter.name === 'next' || submitter.name === 'submit')) {
+                    const rankingContainer = document.querySelector('.ranking-container');
+                    
+                    // If not ranking page, check if an option is selected
+                    if (!rankingContainer) {
+                        const radioButtons = form.querySelectorAll('input[type="radio"]');
+                        const isAnyChecked = Array.from(radioButtons).some(radio => radio.checked);
+                        
+                        if (radioButtons.length > 0 && !isAnyChecked) {
+                            e.preventDefault();
+                            alert('Please select an option before proceeding.');
+                        }
+                    }
+                }
+            });
+        });
+
+        // Drag and drop functionality for ranking grid
+        document.addEventListener('DOMContentLoaded', function() {
+            const sourceCards = document.getElementById('sourceCards');
+            if (!sourceCards) return;
+
+            let draggedCard = null;
+
+            // Make all cards draggable
+            const cards = document.querySelectorAll('.ranking-card');
+            cards.forEach(card => {
+                card.addEventListener('dragstart', function(e) {
+                    draggedCard = this;
+                    this.style.opacity = '0.5';
+                });
+
+                card.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                });
+            });
+
+            // Make slots droppable
+            const slots = document.querySelectorAll('.ranking-slot');
+            slots.forEach(slot => {
+                slot.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+
+                slot.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    if (!this.querySelector('.ranking-card')) {
+                        this.classList.add('slot-hover');
+                    }
+                });
+
+                slot.addEventListener('dragleave', function(e) {
+                    this.classList.remove('slot-hover');
+                });
+
+                slot.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('slot-hover');
+                    
+                    // Only allow drop if slot is empty
+                    if (!this.querySelector('.ranking-card')) {
+                        // Remove from source or previous slot
+                        if (draggedCard.parentElement.classList.contains('ranking-slot')) {
+                            draggedCard.parentElement.classList.remove('slot-filled');
+                        }
+                        
+                        // Add to new slot
+                        this.appendChild(draggedCard);
+                        this.classList.add('slot-filled');
+                        updateHiddenInput();
+                    }
+                });
+            });
+
+            // Allow dropping back to source area
+            sourceCards.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            sourceCards.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (draggedCard.parentElement.classList.contains('ranking-slot')) {
+                    draggedCard.parentElement.classList.remove('slot-filled');
+                    this.appendChild(draggedCard);
+                    updateHiddenInput();
+                }
+            });
+
+            function updateHiddenInput() {
+                const slots = document.querySelectorAll('.ranking-slot');
+                const ranking = [];
+                
+                slots.forEach(slot => {
+                    const card = slot.querySelector('.ranking-card');
+                    if (card) {
+                        ranking.push(card.dataset.value);
+                    } else {
+                        ranking.push('');
+                    }
+                });
+                
+                document.getElementById('rankingOrder').value = ranking.join(',');
+            }
+
+            // Initialize
+            updateHiddenInput();
+
+            // Update on form submit
+            document.getElementById('surveyForm').addEventListener('submit', function(e) {
+                updateHiddenInput();
+                
+                // Only check if all slots are filled when clicking submit button (not previous)
+                const submitter = e.submitter;
+                if (submitter && submitter.name === 'submit') {
+                    const slots = document.querySelectorAll('.ranking-slot');
+                    const allFilled = Array.from(slots).every(slot => slot.querySelector('.ranking-card'));
+                    
+                    if (!allFilled) {
+                        e.preventDefault();
+                        alert('Please rank all cards before submitting!');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container {% if question.type == 'ranking' %}ranking-page{% endif %}">
+        <div class="progress-container">
+            <div class="progress-bar" style="width: {{ progress }}%"></div>
+        </div>
+        
+        <div class="question-counter">
+            Question {{ question_num }} of {{ total_questions }}
+        </div>
+        
+        <form method="POST" class="survey-form" id="surveyForm">
+            <h1>{{ question.question }}</h1>
+            
+            {% if question.type == 'ranking' %}
+                <div class="ranking-container">
+                    <div class="ranking-instructions">
+                        Drag cards from the deck above and drop them into the ranking grid below (1 = Most Important, 8 = Least Important)
+                    </div>
+                    
+                    <!-- Source cards in solitaire layout -->
+                    <div id="sourceCards" class="source-cards">
+                        {% for item in selected_items %}
+                            <div class="ranking-card" draggable="true" data-value="{{ item.text }}">
+                                <div class="card-image-container">
+                                    <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.title }}" class="card-image">
+                                </div>
+                                <div class="card-text">
+                                    <div class="card-title">{{ item.title }}</div>
+                                    <div class="card-description">{{ item.description }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Drop zone grid -->
+                    <div class="ranking-grid">
+                        <div class="ranking-slot" data-rank="1">
+                            <div class="slot-number">1</div>
+                            <div class="slot-label">Most Important</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="2">
+                            <div class="slot-number">2</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="3">
+                            <div class="slot-number">3</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="4">
+                            <div class="slot-number">4</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="5">
+                            <div class="slot-number">5</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="6">
+                            <div class="slot-number">6</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="7">
+                            <div class="slot-number">7</div>
+                        </div>
+                        <div class="ranking-slot" data-rank="8">
+                            <div class="slot-number">8</div>
+                            <div class="slot-label">Least Important</div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="ranking_order" id="rankingOrder">
+                </div>
+            {% else %}
+                <div class="card-group">
+                    {% for option in question.options %}
+                        <label class="card-option {% if saved_answer == option.text %}selected{% endif %}">
+                            <input type="radio" name="{{ question.name }}" value="{{ option.text }}" 
+                                   {% if saved_answer == option.text %}checked{% endif %}
+                                   onchange="selectCard(this)">
+                            {% if option.image %}
+                                <div class="card-image-container">
+                                    <img src="{{ url_for('static', filename='images/' + option.image) }}" alt="{{ option.text }}" class="card-image">
+                                </div>
+                                <div class="card-text">
+                                    <div class="card-title">{{ option.title }}</div>
+                                    <div class="card-description">{{ option.description }}</div>
+                                </div>
+                            {% else %}
+                                <div class="simple-text-option">
+                                    {{ option.text }}
+                                </div>
+                            {% endif %}
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="button-group">
+                {% if question_num > 1 %}
+                    <button type="submit" name="previous" class="btn btn-secondary">Previous</button>
+                {% endif %}
+                
+                {% if question_num < total_questions %}
+                    <button type="submit" name="next" class="btn btn-primary">Next</button>
+                {% else %}
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</body>
+</html>
