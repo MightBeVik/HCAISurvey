@@ -10,8 +10,6 @@ app.secret_key = 'your-secret-key-change-this-in-production'
 CSV_FILE = 'survey_results.csv'
 GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz7pvaiuOx7-U-mz3OpoXhllOYTB0iJJljkXVLbtgMnR6bIjQF1ViILJSbqXCrB1w2iNA/exec"
 
-
-# Define 10 survey questions
 QUESTIONS = [
     {"id": 1, "type": "options", "question": "Have you ever been to Therapy or used Mental Health Applications?", "name": "Therapy Experience",
      "options": [
