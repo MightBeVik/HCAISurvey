@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
 
 CSV_FILE = 'survey_results.csv'
-GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzVBavg2aqnQYLRR3ZR696LPKNhgNqqsZC5jE4ykbAyfusH35j6SAtxAj9S3BeASxdlkw/exec"
+GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz7pvaiuOx7-U-mz3OpoXhllOYTB0iJJljkXVLbtgMnR6bIjQF1ViILJSbqXCrB1w2iNA/exec"
 
 
 # Define 10 survey questions
