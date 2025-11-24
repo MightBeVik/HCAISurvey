@@ -8,6 +8,7 @@ app.secret_key = 'your-secret-key-change-this-in-production'
 
 CSV_FILE = 'survey_results.csv'
 
+
 # Define 10 survey questions
 QUESTIONS = [
     {"id": 1, "type": "options", "question": "Have you ever been to Therapy or used Mental Health Applications?", "name": "Therapy Experience",
