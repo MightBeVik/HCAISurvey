@@ -179,7 +179,7 @@ def submit_survey():
     
     # Set cookie to mark survey as completed
     response = redirect(url_for('thank_you'))
-    response.set_cookie('survey_completed', 'true', max_age=365*24*60*60)  # 1 year
+    #response.set_cookie('survey_completed', 'true', max_age=365*24*60*60)  # 1 year
     return response
 
 @app.route('/thank-you')
