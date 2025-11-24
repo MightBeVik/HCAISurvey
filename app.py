@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import csv
 import os
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
 
 CSV_FILE = 'survey_results.csv'
+GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzVBavg2aqnQYLRR3ZR696LPKNhgNqqsZC5jE4ykbAyfusH35j6SAtxAj9S3BeASxdlkw/exec"
 
 
 # Define 10 survey questions
@@ -143,14 +145,22 @@ def submit_survey():
     if 'answers' not in session:
         return redirect(url_for('index'))
     
-    # Write to CSV
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     answers = session['answers']
     
+    # Write to CSV (local backup)
     with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         row = [timestamp] + [answers.get(q['name'], '') for q in QUESTIONS]
         writer.writerow(row)
+    
+    # Send to Google Sheets
+    try:
+        responses = {'Timestamp': timestamp}
+        responses.update(answers)
+        requests.post(GOOGLE_SHEETS_URL, json=responses, timeout=5)
+    except Exception as e:
+        print(f"Error sending to Google Sheets: {e}")
     
     session.clear()
     return redirect(url_for('thank_you'))
