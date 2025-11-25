@@ -11,6 +11,18 @@
             const allCards = document.querySelectorAll('.card-option');
             allCards.forEach(card => card.classList.remove('selected'));
             input.closest('.card-option').classList.add('selected');
+            
+            // Auto-advance after 0.3 seconds
+            setTimeout(function() {
+                const form = document.getElementById('surveyForm');
+                const nextButton = form.querySelector('button[name="next"]');
+                const submitButton = form.querySelector('button[name="submit"]');
+                if (nextButton) {
+                    nextButton.click();
+                } else if (submitButton) {
+                    submitButton.click();
+                }
+            }, 300);
         }
 
         // Validate on submit for non-ranking questions
@@ -160,6 +172,9 @@
         
         <form method="POST" class="survey-form" id="surveyForm">
             <h1>{{ question.question }}</h1>
+            {% if question.description %}
+            <p class="question-description">{{ question.description }}</p>
+            {% endif %}
             
             {% if question.type == 'ranking' %}
                 <div class="ranking-container">
@@ -215,7 +230,7 @@
                     <input type="hidden" name="ranking_order" id="rankingOrder">
                 </div>
             {% else %}
-                <div class="card-group">
+                <div class="card-group {% if question.options and not question.options[0].image %}vertical{% endif %}">
                     {% for option in question.options %}
                         <label class="card-option {% if saved_answer == option.text %}selected{% endif %}">
                             <input type="radio" name="{{ question.name }}" value="{{ option.text }}" 

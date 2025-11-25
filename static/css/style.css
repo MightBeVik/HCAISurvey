@@ -61,8 +61,15 @@ body {
 .survey-form h1 {
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     color: #333;
+}
+
+.question-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 input[type="text"],
@@ -98,6 +105,14 @@ textarea {
     gap: 20px;
     margin-bottom: 30px;
     flex-wrap: nowrap;
+}
+
+/* Vertical layout for text-only options (like age) */
+.card-group.vertical {
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    margin: 0 auto 30px;
 }
 
 .card-option {
@@ -196,6 +211,21 @@ textarea {
     text-align: center;
     height: 100%;
     width: 100%;
+}
+
+/* Vertical text options styling */
+.card-group.vertical .card-option {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: 60px;
+}
+
+.card-group.vertical .simple-text-option {
+    font-size: 18px;
+    font-weight: 400;
+    justify-content: flex-start;
+    padding-left: 40px;
 }
 
 /* Ranking Interface */

@@ -36,48 +36,48 @@ QUESTIONS = [
          {"text": "Yes"},
          {"text": "No"}
      ]},
-    {"id": 3, "type": "card", "question": "Data Handling", "name": "Data Handling",
+    {"id": 3, "type": "card", "question": "Data Handling", "name": "Data Handling", "description": "How would you prefer your data to be stored and processed?",
      "options": [
          {"text": "Local", "image": "Ondevice.png", "title": "On-Device", "description": "All processing and storage of user data occurs locally on your device, ensuring maximum privacy and rapid response times."},
          {"text": "On-Cloud", "image": "Cloudbase.png", "title": "Cloud-Based", "description": "User data is securely managed and processed on remote servers, offering seamless access, synchronization across devices, and powerful computational resources."}
      ]},
-    {"id": 4, "type": "card", "question": "Human Oversight", "name": "Human Oversight",
+    {"id": 4, "type": "card", "question": "Human Oversight", "name": "Human Oversight", "description": "How much human involvement would you want in the system's decisions?",
      "options": [
          {"text": "None", "image": "None.png", "title": "Autonomous", "description": "The system operates fully autonomously, driven entirely by algorithms and machine learning models without manual intervention."},
          {"text": "Other User Support", "image": "Other user support.png", "title": "Peer Support", "description": "We foster a community where fellow users can provide guidance, troubleshoot issues, and share expertise and solutions."},
          {"text": "Professional Oversight", "image": "Professional oversight.png", "title": "Professional Oversight", "description": "Dedicated, expert teams regularly monitor, review, and refine system performance, ensuring accuracy, safety, and continuous improvement."}
      ]},
-    {"id": 5, "type": "card", "question": "Content Style", "name": "Content Style",
+    {"id": 5, "type": "card", "question": "Content Style", "name": "Content Style", "description": "How would you prefer the system to communicate with you?",
      "options": [
          {"text": "Text-Based", "image": "Teect-based.png", "title": "Text-Based", "description": "All interactions and information delivery are conducted through clear, concise, and structured written communication."},
          {"text": "Voice Interface", "image": "Voice interface.png", "title": "Voice Interface", "description": "We prioritize natural language processing, allowing users to interact with the system entirely through spoken commands and audio feedback."},
          {"text": "Gamified Experience", "image": "Gamified.png", "title": "Gamified Experience", "description": "We integrate playful challenges, rewards, and progress tracking into the user journey to drive engagement and motivation."}
      ]},
-    {"id": 6, "type": "card", "question": "Effectiveness", "name": "Effectiveness",
+    {"id": 6, "type": "card", "question": "Effectiveness", "name": "Effectiveness", "description": "What level of evidence would you expect behind the system's results?",
      "options": [
          {"text": "No Evidence", "image": "No Evidence.png", "title": "No Evidence", "description": "Claims are currently based on internal expectations and future goals, pending external validation and testing."},
          {"text": "User Testimonials", "image": "User testimonial.png", "title": "User Testimonials", "description": "Our success is validated by direct feedback and documented experiences from our community of users."},
          {"text": "Professional Studies", "image": "Professional research.png", "title": "Professional Studies", "description": "Our methods are rigorously backed by peer-reviewed studies and independent, scientifically sound investigations."}
      ]},
-    {"id": 7, "type": "card", "question": "Crisis Handling", "name": "Crisis Handling",
+    {"id": 7, "type": "card", "question": "Crisis Handling", "name": "Crisis Handling", "description": "How should the system respond during urgent or high-stress situations?",
      "options": [
          {"text": "None", "image": "None.png", "title": "Standard Support", "description": "Standard operating procedures apply for all issues; we do not offer specialized, time-critical response mechanisms."},
          {"text": "Resource Sharing Only", "image": "Resource sharing.png", "title": "Resource Sharing", "description": "We provide a curated library of links, documents, and external contacts for users to self-serve during critical times."},
          {"text": "24/7 Emergency Response", "image": "Professional oversight.png", "title": "24/7 Emergency Response", "description": "A dedicated, round-the-clock team is available to immediately address and resolve urgent, high-priority issues."}
      ]},
-    {"id": 8, "type": "card", "question": "Cost", "name": "Cost",
+    {"id": 8, "type": "card", "question": "Cost", "name": "Cost", "description": "How would you prefer to pay for access to the system?",
      "options": [
          {"text": "Free", "image": "Free.png", "title": "Free", "description": "Access to the product's features without any charge."},
          {"text": "Subscription-Based", "image": "5 dollors.png", "title": "Subscription", "description": "Access provided through a recurring monthly or annual payment."},
          {"text": "One-Time Purchase", "image": "15 dollars.png", "title": "One-Time Payment", "description": "Access provided through a single, non-recurring purchase."}
      ]},
-    {"id": 9, "type": "card", "question": "Privacy", "name": "Privacy",
+    {"id": 9, "type": "card", "question": "Privacy", "name": "Privacy", "description": "What level of control would you like over your personal data?",
      "options": [
          {"text": "Legal Policy Only", "image": "Legal Policy.png", "title": "Legal Policy Only", "description": "Our commitment is defined solely by the terms and conditions outlined in our official privacy policy."},
          {"text": "See Your Data", "image": "See your Data.png", "title": "View Your Data", "description": "We offer transparent tools that allow you to easily view and understand all the information we have collected about your usage."},
          {"text": "Download Your Data", "image": "See your Data.png", "title": "Export Your Data", "description": "Users have the fundamental right to export and retrieve a copy of all their personal data in a usable format at any time."}
      ]},
-    {"id": 10, "type": "card", "question": "Response Type", "name": "Response Type",
+    {"id": 10, "type": "card", "question": "Response Type", "name": "Response Type", "description": "How personalized should the system's responses be?",
      "options": [
          {"text": "Same for Everyone", "image": "Same for everyone.png", "title": "Standardized", "description": "The system provides a consistent, standardized set of responses regardless of the individual user or their history."},
          {"text": "Learns from User", "image": "Learn from you.png", "title": "Personalized", "description": "Responses and content are dynamically personalized and adapted based on your past interactions, preferences, and behavior."},
