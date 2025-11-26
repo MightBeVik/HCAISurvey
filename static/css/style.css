@@ -255,60 +255,8 @@ textarea {
     border-radius: 8px;
 }
 
-/* Source cards in solitaire layout */
-.source-cards {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
-    min-height: 480px;
-    position: relative;
-}
-
-.source-cards .ranking-card {
-    position: absolute;
-    cursor: move;
-    transition: all 0.3s ease;
-}
-
-.source-cards .ranking-card:hover {
-    transform: translateY(-10px);
-    z-index: 10;
-}
-
-/* Position cards with overlap */
-.source-cards .ranking-card:nth-child(1) { left: 0; }
-.source-cards .ranking-card:nth-child(2) { left: 60px; }
-.source-cards .ranking-card:nth-child(3) { left: 120px; }
-.source-cards .ranking-card:nth-child(4) { left: 180px; }
-.source-cards .ranking-card:nth-child(5) { left: 240px; }
-.source-cards .ranking-card:nth-child(6) { left: 300px; }
-.source-cards .ranking-card:nth-child(7) { left: 360px; }
-.source-cards .ranking-card:nth-child(8) { left: 420px; }
-
-.ranking-card {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    overflow: hidden;
-    width: 240px;
-    height: 450px;
-    transition: all 0.3s ease;
-}
-
-.ranking-card:hover {
-    border-color: #666;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.ranking-card:hover .card-tooltip {
-    opacity: 1;
-    max-height: 200px;
-}
-
-/* Ranking grid - 4x2 layout */
-.ranking-grid {
+/* Cards grid - 4x2 layout */
+.cards-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -316,59 +264,97 @@ textarea {
     margin-bottom: 30px;
 }
 
-.ranking-slot {
+.ranking-card {
     position: relative;
-    border: 3px dashed #ccc;
-    border-radius: 12px;
-    background: #fafafa;
-    min-height: 480px;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    width: 100%;
+    height: 300px;
+}
+
+.ranking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #666;
+}
+
+.ranking-card:hover .card-tooltip {
+    opacity: 1;
+    max-height: 200px;
+}
+
+/* Image takes up 70% of card height */
+.ranking-card .card-image-container {
+    height: 70%;
+    overflow: hidden;
+    display: flex;
     align-items: center;
     justify-content: center;
+    background: #fafafa;
+}
+
+.ranking-card .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: all 0.3s ease;
 }
 
-.ranking-slot.slot-hover {
-    border-color: #333;
-    background: #f0f0f0;
-    transform: scale(1.02);
-}
-
-.ranking-slot.slot-filled {
-    border-style: solid;
-    border-color: #333;
-    background: white;
-}
-
-.slot-number {
+/* Rank badge - centered overlay */
+.rank-badge {
     position: absolute;
-    top: 15px;
-    left: 15px;
-    font-family: 'Lato', sans-serif;
-    font-size: 32px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
     font-weight: 700;
-    color: #999;
-    z-index: 1;
-}
-
-.ranking-slot.slot-filled .slot-number {
     color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 5;
 }
 
-.slot-label {
+/* Show rank badge when card is ranked */
+.ranking-card.ranked {
+    background: rgba(200, 200, 200, 0.3);
+}
+
+.ranking-card.ranked .rank-badge {
+    opacity: 1;
+}
+
+/* Text takes up 30% of card height */
+.ranking-card .card-text {
+    height: 30%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    overflow-y: auto;
+}
+
+.ranking-card .card-title {
     font-family: 'Lato', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
-    color: #999;
-    text-transform: uppercase;
-    position: absolute;
-    bottom: 15px;
-}
-
-.ranking-slot .ranking-card {
-    position: relative;
-    z-index: 2;
+    color: #333;
+    text-align: center;
+    line-height: 1.3;
 }
 
 /* Buttons */
