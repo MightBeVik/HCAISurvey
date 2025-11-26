@@ -75,7 +75,7 @@ QUESTIONS = [
      "options": [
          {"text": "Legal Policy Only", "image": "Legal Policy.png", "title": "Legal Policy Only", "description": "Follows our official privacy policy."},
          {"text": "See Your Data", "image": "See your Data.png", "title": "View Your Data", "description": "Lets you view all your data."},
-         {"text": "Download Your Data", "image": "See your Data.png", "title": "Export Your Data", "description": "Lets you download your data."}
+         {"text": "Download Your Data", "image": "Export_your_data.png", "title": "Export Your Data", "description": "Lets you download your data."}
      ]},
     {"id": 10, "type": "card", "question": "Response Type", "name": "Response Type", "description": "How personalized should the system's responses be?",
      "options": [
