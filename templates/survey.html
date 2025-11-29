@@ -56,8 +56,7 @@
             const rankingContainer = document.querySelector('.ranking-container');
             if (!rankingContainer) return;
 
-            const rankMap = new Map(); // Tracks card value -> rank
-            let nextRank = 1;
+            const rankedCards = []; // Array of card values in rank order
 
             // Initialize cards grid
             const cardsGrid = document.getElementById('cardsGrid');
@@ -68,33 +67,43 @@
                 card.addEventListener('click', function(e) {
                     e.preventDefault();
                     const cardValue = this.dataset.value;
+                    const cardIndex = rankedCards.indexOf(cardValue);
                     
-                    if (rankMap.has(cardValue)) {
+                    if (cardIndex !== -1) {
                         // De-rank the card
-                        rankMap.delete(cardValue);
-                        this.classList.remove('ranked');
-                        this.querySelector('.rank-badge').textContent = '';
-                        nextRank--;
+                        rankedCards.splice(cardIndex, 1);
                     } else {
-                        // Rank the card
-                        if (nextRank <= 8) {
-                            rankMap.set(cardValue, nextRank);
-                            this.classList.add('ranked');
-                            this.querySelector('.rank-badge').textContent = nextRank;
-                            nextRank++;
+                        // Rank the card (if not already at 8)
+                        if (rankedCards.length < 8) {
+                            rankedCards.push(cardValue);
                         }
                     }
                     
+                    // Update all card displays
+                    updateCardDisplays();
                     updateHiddenInput();
                 });
             });
 
+            function updateCardDisplays() {
+                cards.forEach(card => {
+                    const cardValue = card.dataset.value;
+                    const rankIndex = rankedCards.indexOf(cardValue);
+                    
+                    if (rankIndex !== -1) {
+                        // Card is ranked
+                        card.classList.add('ranked');
+                        card.querySelector('.rank-badge').textContent = rankIndex + 1;
+                    } else {
+                        // Card is not ranked
+                        card.classList.remove('ranked');
+                        card.querySelector('.rank-badge').textContent = '';
+                    }
+                });
+            }
+
             function updateHiddenInput() {
-                const sortedRanking = Array.from(rankMap.entries())
-                    .sort((a, b) => a[1] - b[1])
-                    .map(entry => entry[0]);
-                
-                document.getElementById('rankingOrder').value = sortedRanking.join(',');
+                document.getElementById('rankingOrder').value = rankedCards.join(',');
             }
 
             // Update on form submit
@@ -104,7 +113,7 @@
                 // Only check if all cards are ranked when clicking submit button (not previous)
                 const submitter = e.submitter;
                 if (submitter && submitter.name === 'submit') {
-                    if (rankMap.size !== 8) {
+                    if (rankedCards.length !== 8) {
                         e.preventDefault();
                         alert('Please rank all 8 cards before submitting!');
                     }
